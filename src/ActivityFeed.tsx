@@ -8,6 +8,8 @@ interface Activity {
   occurredAtUtc: string;
   transactor: string;
   actualSender?: string;
+  transactionHash?: string;
+  chainId?: number;
   to?: {
     name: string;
   };
@@ -33,32 +35,39 @@ export default function ActivityFeed() {
 
   useEffect(() => {
     if (!ein) return;
+    
+    let isMounted = true;
     setLoading(true);
     setError(null);
     
-    // Use deployed API in production, local API in development
-    const apiUrl = (import.meta as any).env?.DEV ? `/api/activity?orgId=${ein}` : `https://g1ve.xyz/api/activity?orgId=${ein}`;
+    // Use local API with BaseScan extraction
+    const apiUrl = `/api/activity?orgId=${ein}`;
+    
     fetch(apiUrl)
       .then(res => {
-        console.log('API Response status:', res.status);
         if (!res.ok) {
           return res.text().then(text => {
-            console.error('API Error response:', text);
             throw new Error(`Failed to fetch activity: ${res.status} - ${text}`);
           });
         }
         return res.json();
       })
-            .then(data => {
-        console.log('Activity data received:', data);
+      .then((data: Activity[]) => {
+        if (!isMounted) return;
+        console.log('Activity data from API:', data);
         setActivities(data);
         setLoading(false);
       })
       .catch(err => {
+        if (!isMounted) return;
         console.error('ActivityFeed error:', err);
         setError(`Failed to load activity: ${err.message}`);
         setLoading(false);
       });
+      
+    return () => {
+      isMounted = false;
+    };
   }, [ein]);
 
   if (!ein) {
@@ -132,10 +141,8 @@ export default function ActivityFeed() {
                 maximumFractionDigits: 2 
               });
               
-              // Always prioritize actualSender when available (the real donor from blockchain logs)
-              // This is the most accurate address for who actually made the donation
-              const displayAddress = activity.actualSender || activity.transactor;
-              
+              // Use actualSender if available, fallback to transactor
+              const senderAddress = activity.actualSender || activity.transactor;
               const shortenAddress = (address: string) => 
                 address ? `${address.slice(0, 6)}...${address.slice(-4)}` : 'Unknown';
               
@@ -159,9 +166,9 @@ export default function ActivityFeed() {
                   )}
                   
                   <p className="text-xs text-gray-400 font-mono">
-                    {new Date(activity.occurredAtUtc).toLocaleString()} by {shortenAddress(displayAddress)}
+                    {new Date(activity.occurredAtUtc).toLocaleString()} by {shortenAddress(senderAddress)}
                     <a 
-                      href={`https://basescan.org/address/${displayAddress}`}
+                      href={`https://basescan.org/address/${senderAddress}`}
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="text-terminal hover:text-terminal/80 ml-1"

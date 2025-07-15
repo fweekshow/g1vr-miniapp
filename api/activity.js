@@ -23,11 +23,11 @@ export default async function handler(req, res) {
     }
     const activityData = JSON.parse(activityText);
 
-    // 3. Extract actual donor addresses from transaction logs (if API key is available)
-    const apiKey = process.env.BASESCAN_API_KEY;
+    // 3. Extract actual donor addresses from transaction logs
+    const apiKey = process.env.BASESCAN_API_KEY || 'YOUR_BASESCAN_API_KEY';
     const activitiesWithRealSenders = await Promise.all(
       activityData.map(async (activity) => {
-        if (activity.transactionHash && activity.chainId && apiKey) {
+        if (activity.transactionHash && activity.chainId) {
           try {
             // Get transaction receipt to find the "Deposited" event
             const receiptUrl = activity.chainId === 8453 

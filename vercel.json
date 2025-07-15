@@ -1,36 +1,19 @@
 {
-  "name": "g1vr-miniapp",
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    },
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "@vercel/node@18"
     }
-  ],
+  },
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/.well-known/farcaster.json",
-      "headers": {
-        "Content-Type": "application/json"
-      }
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  }
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/.well-known/farcaster.json", "headers": { "Content-Type": "application/json" } },
+    // This line lets static assets through
+    { "src": "/assets/(.*)", "dest": "/assets/$1" },
+    // This must be LAST
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
 } 
