@@ -1,0 +1,6 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" fill="#000000" rx="20"/>
+  <rect x="10" y="10" width="180" height="180" fill="#1DB64F" rx="15"/>
+  <text x="100" y="120" font-family="Fira Mono, monospace" font-size="48" font-weight="bold" text-anchor="middle" fill="black">GIVR</text>
+  <circle cx="100" cy="60" r="15" fill="black"/>
+</svg> 

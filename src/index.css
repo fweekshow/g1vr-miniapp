@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply font-mono bg-terminal-bg text-white;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Improve touch targets on mobile */
+a, button {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Prevent zoom on input focus on iOS */
+input, textarea, select {
+  font-size: 16px;
+}
+
+/* Smooth scrolling for mobile */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Better mobile performance */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reusable layout classes */
+@layer components {
+  .card-layout {
+    @apply flex flex-col flex-1 min-w-0 bg-black rounded-xl p-6 shadow-xl border border-terminal text-white;
+  }
+  
+  .container-layout {
+    @apply flex flex-col md:flex-row items-stretch justify-center gap-6 px-4 py-10 w-full max-w-4xl mx-auto;
+  }
+
+  .card-fixed-size {
+    @apply w-full md:w-[460px];
+  }
+}
+
+@layer utilities {
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-scroll {
+    animation: scroll 40s linear infinite;
+  }
+}
