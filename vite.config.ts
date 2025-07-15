@@ -6,5 +6,12 @@ export default defineConfig({
   plugins: [react()],
   server: {
     allowedHosts: true,
+    proxy: {
+      '/api': {
+        target: 'https://g1ve.xyz',
+        changeOrigin: true,
+        secure: true,
+      }
+    }
   },
 });

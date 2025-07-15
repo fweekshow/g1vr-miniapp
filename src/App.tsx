@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { sdk } from "@farcaster/miniapp-sdk";
-import { useEffect, useState } from "react";
 import { useAccount, useConnect } from "wagmi";
 import DailyCause from "./DailyCause";
 import TokenClaims from "./TokenClaims";
