@@ -11,9 +11,7 @@
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1" },
     { "src": "/.well-known/farcaster.json", "headers": { "Content-Type": "application/json" } },
-    // This line lets static assets through
     { "src": "/assets/(.*)", "dest": "/assets/$1" },
-    // This must be LAST
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 } 
