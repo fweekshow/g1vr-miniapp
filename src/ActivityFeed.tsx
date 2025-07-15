@@ -49,14 +49,14 @@ export default function ActivityFeed() {
         }
         return res.json();
       })
-      .then(data => {
-
+            .then(data => {
+        console.log('Activity data received:', data);
         setActivities(data);
         setLoading(false);
       })
       .catch(err => {
         console.error('ActivityFeed error:', err);
-        setError(err.message);
+        setError(`Failed to load activity: ${err.message}`);
         setLoading(false);
       });
   }, [ein]);
@@ -95,6 +95,9 @@ export default function ActivityFeed() {
             RECENT ACTIVITY
           </h2>
           <p className="text-red-400 text-center font-mono">Error: {error}</p>
+          <p className="text-gray-400 text-center font-mono text-sm mt-2">
+            The activity feed is temporarily unavailable. Please try again later.
+          </p>
           <button
             onClick={() => window.location.reload()}
             className="mt-2 bg-terminal text-black px-4 py-2 rounded font-bold hover:bg-terminal/80 font-mono"
