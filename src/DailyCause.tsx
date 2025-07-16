@@ -29,7 +29,7 @@ export default function DailyCause() {
   }
 
   return (
-    <div className="max-w-md mx-auto p-4">
+    <div className="w-full max-w-sm mx-auto p-3">
       <div className="text-center mb-6">
         <h2 className="text-lg font-semibold text-terminal tracking-wide font-mono">
           DAILY REVOLVING QR CODE
@@ -46,11 +46,11 @@ export default function DailyCause() {
         </p>
 
         <div className="flex flex-col items-center gap-4 mb-6">
-          <div className="bg-white p-3 rounded-xl border-2 border-terminal shadow-md">
+          <div className="bg-white p-2 rounded-xl border-2 border-terminal shadow-md">
             <img
               src="/qr/daily-cause.png"
               alt="Daily Cause QR Code"
-              className="w-48 h-48 rounded-lg"
+              className="w-40 h-40 rounded-lg"
             />
           </div>
           

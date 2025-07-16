@@ -2,7 +2,7 @@
   <rect width="600" height="400" fill="#000000"/>
   <rect x="50" y="50" width="500" height="300" fill="#1DB64F" rx="20"/>
   <rect x="70" y="70" width="460" height="260" fill="#000000" rx="15"/>
-  <text x="300" y="180" font-family="Fira Mono, monospace" font-size="48" font-weight="bold" text-anchor="middle" fill="#1DB64F">GIVR</text>
+  <text x="300" y="180" font-family="Fira Mono, monospace" font-size="48" font-weight="bold" text-anchor="middle" fill="#1DB64F">G1VE</text>
   <text x="300" y="220" font-family="Fira Mono, monospace" font-size="24" text-anchor="middle" fill="#1DB64F">SCAN TO SUPPORT</text>
   <circle cx="300" cy="120" r="25" fill="#1DB64F"/>
 </svg> 

@@ -1,18 +1,12 @@
 {
-  "accountAssociation": {
-    "header": "PLACEHOLDER_HEADER",
-    "payload": "PLACEHOLDER_PAYLOAD", 
-    "signature": "PLACEHOLDER_SIGNATURE"
-  },
   "miniapp": {
     "version": "1",
-    "name": "Givr",
-    "iconUrl": "https://miniapp.g1ve.xyz/logo.svg",
+    "name": "G1VR",
+    "iconUrl": "https://miniapp.g1ve.xyz/logo.png",
     "homeUrl": "https://miniapp.g1ve.xyz/",
     "imageUrl": "https://miniapp.g1ve.xyz/frame-image.svg",
-    "buttonTitle": "🎯 Givr",
-    "splashImageUrl": "https://miniapp.g1ve.xyz/logo.svg",
-    "splashBackgroundColor": "#000000",
-    "webhookUrl": "https://miniapp.g1ve.xyz/api/webhook"
+    "buttonTitle": "🎯 G1VR",
+    "splashImageUrl": "https://miniapp.g1ve.xyz/logo.png",
+    "splashBackgroundColor": "#000000"
   }
 }

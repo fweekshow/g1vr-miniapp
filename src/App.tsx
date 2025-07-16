@@ -9,12 +9,26 @@ function App() {
   const [activeTab, setActiveTab] = useState<'cause' | 'claims' | 'activity'>('cause');
 
   useEffect(() => {
-    sdk.actions.ready();
+    // Call ready() immediately when component mounts
+    const handleReady = async () => {
+      try {
+        console.log('SDK available:', !!sdk);
+        console.log('SDK actions available:', !!sdk?.actions);
+        console.log('Calling sdk.actions.ready()...');
+        await sdk.actions.ready();
+        console.log('sdk.actions.ready() called successfully');
+      } catch (error) {
+        console.error('Error calling sdk.actions.ready():', error);
+      }
+    };
+    
+    // Call ready immediately
+    handleReady();
   }, []);
 
   return (
     <div className="min-h-screen bg-terminal-bg">
-      <div className="max-w-md mx-auto">
+      <div className="w-full max-w-sm mx-auto">
         <ConnectMenu />
         
         {activeTab === 'cause' && <DailyCause />}
@@ -63,10 +77,10 @@ function TabNavigation({
 }) {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-black border-t border-terminal">
-      <div className="max-w-md mx-auto flex">
+      <div className="w-full max-w-sm mx-auto flex">
         <button
           onClick={() => setActiveTab('cause')}
-          className={`flex-1 py-3 px-2 text-sm font-bold font-mono ${
+          className={`flex-1 py-2 px-1 text-xs font-bold font-mono ${
             activeTab === 'cause' 
               ? 'text-terminal border-t-2 border-terminal' 
               : 'text-gray-400'
@@ -76,7 +90,7 @@ function TabNavigation({
         </button>
         <button
           onClick={() => setActiveTab('claims')}
-          className={`flex-1 py-3 px-2 text-sm font-bold font-mono ${
+          className={`flex-1 py-2 px-1 text-xs font-bold font-mono ${
             activeTab === 'claims' 
               ? 'text-terminal border-t-2 border-terminal' 
               : 'text-gray-400'
@@ -86,7 +100,7 @@ function TabNavigation({
         </button>
         <button
           onClick={() => setActiveTab('activity')}
-          className={`flex-1 py-3 px-2 text-sm font-bold font-mono ${
+          className={`flex-1 py-2 px-1 text-xs font-bold font-mono ${
             activeTab === 'activity' 
               ? 'text-terminal border-t-2 border-terminal' 
               : 'text-gray-400'

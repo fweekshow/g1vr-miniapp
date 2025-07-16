@@ -72,7 +72,7 @@ export default function ActivityFeed() {
 
   if (!ein) {
     return (
-      <div className="max-w-md mx-auto p-4">
+      <div className="w-full max-w-sm mx-auto p-3">
         <div className="card-layout">
           <h2 className="text-xl font-bold text-terminal mb-4 text-center font-mono">
             RECENT ACTIVITY
@@ -85,7 +85,7 @@ export default function ActivityFeed() {
 
   if (loading) {
     return (
-      <div className="max-w-md mx-auto p-4">
+      <div className="w-full max-w-sm mx-auto p-3">
         <div className="card-layout">
           <h2 className="text-xl font-bold text-terminal mb-4 text-center font-mono">
             RECENT ACTIVITY
@@ -98,7 +98,7 @@ export default function ActivityFeed() {
 
   if (error) {
     return (
-      <div className="max-w-md mx-auto p-4">
+      <div className="w-full max-w-sm mx-auto p-3">
         <div className="card-layout">
           <h2 className="text-xl font-bold text-terminal mb-4 text-center font-mono">
             RECENT ACTIVITY
@@ -124,7 +124,7 @@ export default function ActivityFeed() {
     .slice(0, 5);
 
   return (
-    <div className="max-w-md mx-auto p-4">
+    <div className="w-full max-w-sm mx-auto p-3">
       <div className="card-layout">
         <h2 className="text-xl font-bold text-terminal mb-4 text-center font-mono">
           RECENT ACTIVITY
