@@ -9,6 +9,8 @@
     { "src": "/qr/(.*)", "dest": "/qr/$1" },
     { "src": "/logo.(png|svg)", "dest": "/logo.$1" },
     { "src": "/frame-image.svg", "dest": "/frame-image.svg" },
+    { "src": "/icon.png", "dest": "/icon.png" },
+    { "src": "/splash.png", "dest": "/splash.png" },
     { "src": "/assets/(.*)", "dest": "/assets/$1" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]

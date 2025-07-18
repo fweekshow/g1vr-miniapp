@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mini App specific optimizations */
+html, body {
+  height: 100%;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
 body {
   @apply font-mono bg-terminal-bg text-white;
   -webkit-tap-highlight-color: transparent;
@@ -11,6 +19,10 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  /* Prevent zoom on iOS */
+  touch-action: manipulation;
+  /* Ensure proper scaling in Mini App */
+  transform-origin: top left;
 }
 
 /* Improve touch targets on mobile */
@@ -35,10 +47,21 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Mini App container */
+#root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
 /* Reusable layout classes */
 @layer components {
   .card-layout {
     @apply flex flex-col flex-1 min-w-0 bg-black rounded-xl p-6 shadow-xl border border-terminal text-white;
+  }
+  
+  .card-layout-compact {
+    @apply flex flex-col flex-1 min-w-0 bg-black rounded-xl p-4 shadow-xl border border-terminal text-white;
   }
   
   .container-layout {

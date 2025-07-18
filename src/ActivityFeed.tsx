@@ -72,9 +72,9 @@ export default function ActivityFeed() {
 
   if (!ein) {
     return (
-      <div className="w-full max-w-sm mx-auto p-3">
-        <div className="card-layout">
-          <h2 className="text-xl font-bold text-terminal mb-4 text-center font-mono">
+      <div className="w-full max-w-sm mx-auto">
+        <div className="card-layout-compact">
+          <h2 className="text-lg font-bold text-terminal mb-4 text-center font-mono">
             RECENT ACTIVITY
           </h2>
           <p className="text-gray-400 text-center font-mono">No cause found for today.</p>
@@ -85,9 +85,9 @@ export default function ActivityFeed() {
 
   if (loading) {
     return (
-      <div className="w-full max-w-sm mx-auto p-3">
-        <div className="card-layout">
-          <h2 className="text-xl font-bold text-terminal mb-4 text-center font-mono">
+      <div className="w-full max-w-sm mx-auto">
+        <div className="card-layout-compact">
+          <h2 className="text-lg font-bold text-terminal mb-4 text-center font-mono">
             RECENT ACTIVITY
           </h2>
           <p className="text-gray-400 text-center font-mono">Loading activity...</p>
@@ -98,9 +98,9 @@ export default function ActivityFeed() {
 
   if (error) {
     return (
-      <div className="w-full max-w-sm mx-auto p-3">
-        <div className="card-layout">
-          <h2 className="text-xl font-bold text-terminal mb-4 text-center font-mono">
+      <div className="w-full max-w-sm mx-auto">
+        <div className="card-layout-compact">
+          <h2 className="text-lg font-bold text-terminal mb-4 text-center font-mono">
             RECENT ACTIVITY
           </h2>
           <p className="text-red-400 text-center font-mono">Error: {error}</p>
@@ -109,7 +109,7 @@ export default function ActivityFeed() {
           </p>
           <button
             onClick={() => window.location.reload()}
-            className="mt-2 bg-terminal text-black px-4 py-2 rounded font-bold hover:bg-terminal/80 font-mono"
+            className="mt-3 bg-terminal text-black px-4 py-2 rounded font-bold hover:bg-terminal/80 font-mono text-sm"
           >
             RETRY
           </button>
@@ -124,9 +124,9 @@ export default function ActivityFeed() {
     .slice(0, 5);
 
   return (
-    <div className="w-full max-w-sm mx-auto p-3">
-      <div className="card-layout">
-        <h2 className="text-xl font-bold text-terminal mb-4 text-center font-mono">
+    <div className="w-full max-w-sm mx-auto">
+      <div className="card-layout-compact">
+        <h2 className="text-lg font-bold text-terminal mb-4 text-center font-mono">
           RECENT ACTIVITY
         </h2>
         
@@ -146,21 +146,19 @@ export default function ActivityFeed() {
               const shortenAddress = (address: string) => 
                 address ? `${address.slice(0, 6)}...${address.slice(-4)}` : 'Unknown';
               
-
-              
               return (
                 <li key={activity.id || `activity-${index}`} className="border-b border-terminal pb-2 last:border-b-0">
                   <div className="flex justify-between items-start mb-1">
-                    <span className="font-semibold capitalize text-terminal font-mono">
+                    <span className="font-semibold capitalize text-terminal font-mono text-sm">
                       {activity.type}
                     </span>
-                    <span className="text-terminal font-bold font-mono">
+                    <span className="text-terminal font-bold font-mono text-sm">
                       ${formattedAmount} USDC
                     </span>
                   </div>
                   
                   {activity.to?.name && (
-                    <p className="text-sm text-gray-300 mb-1 font-mono">
+                    <p className="text-xs text-gray-300 mb-1 font-mono">
                       to {activity.to.name}
                     </p>
                   )}

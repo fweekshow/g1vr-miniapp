@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { sdk } from "@farcaster/miniapp-sdk";
 import { useAccount, useConnect } from "wagmi";
 import DailyCause from "./DailyCause";
-import TokenClaims from "./TokenClaims";
 import ActivityFeed from "./ActivityFeed";
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'cause' | 'claims' | 'activity'>('cause');
+  const [activeTab, setActiveTab] = useState<'cause' | 'activity'>('cause');
 
   useEffect(() => {
     // Call ready() immediately when component mounts
@@ -27,15 +26,16 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-terminal-bg">
-      <div className="w-full max-w-sm mx-auto">
+    <div className="min-h-full bg-terminal-bg flex flex-col">
+      <div className="w-full max-w-sm mx-auto flex flex-col flex-1">
         <ConnectMenu />
         
-        {activeTab === 'cause' && <DailyCause />}
-        {activeTab === 'claims' && <TokenClaims />}
-        {activeTab === 'activity' && <ActivityFeed />}
-        
-        <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
+        <div className="flex-1 overflow-y-auto flex flex-col justify-center items-center px-4 pb-6">
+          {activeTab === 'cause' && <DailyCause />}
+          {activeTab === 'activity' && <ActivityFeed />}
+          
+          <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
+        </div>
       </div>
     </div>
   );
@@ -47,8 +47,8 @@ function ConnectMenu() {
 
   if (isConnected) {
     return (
-      <div className="bg-black shadow-sm border-b border-terminal p-3">
-        <div className="text-sm text-terminal font-mono">
+      <div className="bg-black shadow-sm border-b border-terminal p-3 flex-shrink-0">
+        <div className="text-xs text-terminal font-mono">
           Connected: {address?.slice(0, 6)}...{address?.slice(-4)}
         </div>
       </div>
@@ -56,11 +56,11 @@ function ConnectMenu() {
   }
 
   return (
-    <div className="bg-black shadow-sm border-b border-terminal p-4">
+    <div className="bg-black shadow-sm border-b border-terminal p-3 flex-shrink-0">
       <button 
         type="button" 
         onClick={() => connect({ connector: connectors[0] })}
-        className="w-full bg-terminal text-black px-4 py-2 rounded font-bold hover:bg-terminal/80 font-mono tracking-widest"
+        className="w-full bg-terminal text-black px-4 py-3 rounded font-bold hover:bg-terminal/80 font-mono tracking-widest text-sm"
       >
         CONNECT WALLET
       </button>
@@ -72,38 +72,28 @@ function TabNavigation({
   activeTab, 
   setActiveTab 
 }: { 
-  activeTab: 'cause' | 'claims' | 'activity';
-  setActiveTab: (tab: 'cause' | 'claims' | 'activity') => void;
+  activeTab: 'cause' | 'activity';
+  setActiveTab: (tab: 'cause' | 'activity') => void;
 }) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-black border-t border-terminal">
-      <div className="w-full max-w-sm mx-auto flex">
+    <div className="w-full max-w-sm mx-auto mt-6">
+      <div className="bg-black border border-terminal rounded-lg p-1 flex">
         <button
           onClick={() => setActiveTab('cause')}
-          className={`flex-1 py-2 px-1 text-xs font-bold font-mono ${
+          className={`flex-1 py-3 px-4 text-xs font-bold font-mono rounded-md transition-colors ${
             activeTab === 'cause' 
-              ? 'text-terminal border-t-2 border-terminal' 
-              : 'text-gray-400'
+              ? 'bg-terminal text-black' 
+              : 'text-gray-400 hover:text-white'
           }`}
         >
           DAILY CAUSE
         </button>
         <button
-          onClick={() => setActiveTab('claims')}
-          className={`flex-1 py-2 px-1 text-xs font-bold font-mono ${
-            activeTab === 'claims' 
-              ? 'text-terminal border-t-2 border-terminal' 
-              : 'text-gray-400'
-          }`}
-        >
-          CLAIMS
-        </button>
-        <button
           onClick={() => setActiveTab('activity')}
-          className={`flex-1 py-2 px-1 text-xs font-bold font-mono ${
+          className={`flex-1 py-3 px-4 text-xs font-bold font-mono rounded-md transition-colors ${
             activeTab === 'activity' 
-              ? 'text-terminal border-t-2 border-terminal' 
-              : 'text-gray-400'
+              ? 'bg-terminal text-black' 
+              : 'text-gray-400 hover:text-white'
           }`}
         >
           ACTIVITY
