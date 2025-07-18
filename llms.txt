@@ -4817,3 +4817,4 @@ console.log(sdk.quickAuth.token)
 ```
 
 You must [validate the token on your server](/docs/sdk/quick-auth#validate-a-session-token).
+

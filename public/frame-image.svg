@@ -1,11 +1,25 @@
 <svg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
   <rect width="600" height="400" fill="#000000"/>
-  <rect x="50" y="50" width="500" height="300" fill="#1DB64F" rx="20"/>
-  <rect x="70" y="70" width="460" height="260" fill="#000000" rx="15"/>
   
-  <!-- QR Code image - centered in the black rectangle -->
-  <image href="/qr/daily-cause.png" x="185" y="85" width="230" height="230" preserveAspectRatio="xMidYMid meet"/>
+  <!-- Logo section -->
+  <g transform="translate(300, 200)">
+    <!-- Circular logo background -->
+    <circle cx="0" cy="-50" r="80" fill="#E8F5E8"/>
+    <circle cx="0" cy="-50" r="60" fill="#D4E6D4"/>
+    <circle cx="0" cy="-50" r="40" fill="#C0D7C0"/>
+    
+    <!-- Heart and plus sign -->
+    <g transform="translate(0, -50)">
+      <!-- Heart shape -->
+      <path d="M-12,8 C-12,8 -8,4 -4,4 C0,4 0,8 0,8 C0,8 0,4 4,4 C8,4 12,8 12,8 C12,8 8,12 0,20 C-8,12 -12,8 -12,8 Z" fill="#000000"/>
+      <!-- Plus sign -->
+      <rect x="-2" y="-6" width="4" height="12" fill="#FFFFFF"/>
+      <rect x="-6" y="-2" width="12" height="4" fill="#FFFFFF"/>
+    </g>
+  </g>
   
-  <!-- G1VE text - positioned below QR code with clear separation -->
-  <text x="300" y="350" font-family="Fira Mono, monospace" font-size="28" font-weight="bold" text-anchor="middle" fill="#1DB64F">G1VE</text>
+  <!-- Text banner -->
+  <rect x="150" y="280" width="300" height="60" rx="30" fill="#E6E6FA"/>
+  <text x="300" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#4A4A4A">Generosity Onchain</text>
 </svg> 

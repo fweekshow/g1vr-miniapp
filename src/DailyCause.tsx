@@ -32,7 +32,7 @@ export default function DailyCause() {
     <div className="w-full max-w-sm mx-auto">
       <div className="text-center mb-4">
         <h2 className="text-sm font-semibold text-terminal tracking-wide font-mono">
-          DAILY REVOLVING QR CODE
+          DAILY REVOLVING NON-PROFIT
         </h2>
       </div>
       
