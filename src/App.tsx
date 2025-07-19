@@ -9,21 +9,33 @@ function App() {
   const [activeTab, setActiveTab] = useState<'cause' | 'activity'>('cause');
 
   useEffect(() => {
-    // Call ready() immediately when component mounts
-    const handleReady = async () => {
+    // Check if we're in a Mini App environment
+    const checkMiniAppEnvironment = async () => {
       try {
+        console.log('Checking Mini App environment...');
         console.log('SDK available:', !!sdk);
         console.log('SDK actions available:', !!sdk?.actions);
-        console.log('Calling sdk.actions.ready()...');
+        
+        // Check if SDK is available
+        if (!sdk || !sdk.actions) {
+          console.log('SDK not available, redirecting to g1ve.xyz');
+          window.location.href = 'https://g1ve.xyz';
+          return;
+        }
+        
+        // Try to call sdk.actions.ready() - this will only work in Mini App environment
         await sdk.actions.ready();
-        console.log('sdk.actions.ready() called successfully');
+        console.log('Mini App environment detected - continuing normally');
+        // Mini App environment detected - continue normally
       } catch (error) {
-        console.error('Error calling sdk.actions.ready():', error);
+        console.log('Browser environment detected, redirecting to g1ve.xyz');
+        console.log('Error details:', error);
+        // If this fails, we're likely in a browser environment
+        window.location.href = 'https://g1ve.xyz';
       }
     };
     
-    // Call ready immediately
-    handleReady();
+    checkMiniAppEnvironment();
   }, []);
 
   return (

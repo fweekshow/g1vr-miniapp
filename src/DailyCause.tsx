@@ -10,13 +10,45 @@ interface Cause {
 
 export default function DailyCause() {
   const [cause, setCause] = useState<Cause | null>(null);
+  const [nextChange, setNextChange] = useState<string>('');
 
   useEffect(() => {
-    // Get current date in Pacific Time
-    const pacific = new Date().toLocaleString("en-US", { timeZone: "America/Los_Angeles" });
-    const today = new Date(pacific).toISOString().split('T')[0];
+    // Get current date in Pacific Time at midnight
+    const getPacificDate = () => {
+      const now = new Date();
+      const pacificTime = new Date(now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
+      const year = pacificTime.getFullYear();
+      const month = String(pacificTime.getMonth() + 1).padStart(2, '0');
+      const day = String(pacificTime.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+    
+    const today = getPacificDate();
+    console.log('Current Pacific date:', today);
     const match = causes.find(c => c.date === today);
     setCause(match || null);
+    
+    // Calculate next change time (midnight Pacific)
+    const getNextChangeTime = () => {
+      const now = new Date();
+      const pacificTime = new Date(now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
+      const tomorrow = new Date(pacificTime);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(0, 0, 0, 0);
+      
+      const nextChangeTime = new Date(tomorrow.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
+      return nextChangeTime.toLocaleString("en-US", { 
+        timeZone: "America/Los_Angeles",
+        weekday: 'short',
+        month: 'short', 
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        timeZoneName: 'short'
+      });
+    };
+    
+    setNextChange(getNextChangeTime());
   }, []);
 
   if (!cause) {
@@ -66,6 +98,10 @@ export default function DailyCause() {
 
         <p className="text-xs text-gray-400 text-center font-mono">
           Scan the QR code above with your phone's camera to donate directly to today's cause.
+        </p>
+        
+        <p className="text-xs text-gray-500 text-center font-mono mt-2">
+          Next cause: {nextChange}
         </p>
       </div>
     </div>
