@@ -20,9 +20,17 @@ export default function ActivityFeed() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Get current date in Pacific Time and find today's cause
-  const pacific = new Date().toLocaleString("en-US", { timeZone: "America/Los_Angeles" });
-  const today = new Date(pacific).toISOString().split('T')[0];
+  // Get current date in Pacific Time and find today's cause (matching DailyCause logic)
+  const getPacificDate = () => {
+    const now = new Date();
+    const pacificTime = new Date(now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
+    const year = pacificTime.getFullYear();
+    const month = String(pacificTime.getMonth() + 1).padStart(2, '0');
+    const day = String(pacificTime.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+  
+  const today = getPacificDate();
   const todayCause = causes.find(c => c.date === today);
 
   // Helper to extract EIN from external_link and remove hyphens

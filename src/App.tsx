@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { sdk } from "@farcaster/miniapp-sdk";
-import { useAccount, useConnect, WagmiConfig } from "wagmi";
-import { config } from "./wagmi";
 import DailyCause from "./DailyCause";
 import ActivityFeed from "./ActivityFeed";
+import { BaseAccountProvider, useBaseAccount } from "./BaseAccountProvider";
 
 function App() {
   const [activeTab, setActiveTab] = useState<'cause' | 'activity'>('cause');
@@ -39,7 +38,7 @@ function App() {
   }, []);
 
   return (
-    <WagmiConfig config={config}>
+    <BaseAccountProvider>
       <div className="min-h-full bg-terminal-bg flex flex-col">
         <div className="w-full max-w-sm mx-auto flex flex-col flex-1">
           <ConnectMenu />
@@ -52,21 +51,26 @@ function App() {
           </div>
         </div>
       </div>
-    </WagmiConfig>
+    </BaseAccountProvider>
   );
 }
 
 function ConnectMenu() {
-  const { address, isConnected } = useAccount();
-  const { connect, connectors, isPending } = useConnect();
+  const { address, isConnected, connect, disconnect, isLoading } = useBaseAccount();
 
   const handleConnect = async () => {
     try {
-      if (connectors.length > 0) {
-        await connect({ connector: connectors[0] });
-      }
+      await connect();
     } catch (error) {
-      // Connection failed silently
+      console.error('Connection failed:', error);
+    }
+  };
+
+  const handleDisconnect = async () => {
+    try {
+      await disconnect();
+    } catch (error) {
+      console.error('Disconnect failed:', error);
     }
   };
 
@@ -77,6 +81,12 @@ function ConnectMenu() {
           <div className="text-xs text-terminal font-mono">
             Connected: {address.slice(0, 6)}...{address.slice(-4)}
           </div>
+          <button 
+            onClick={handleDisconnect}
+            className="text-xs text-gray-400 hover:text-white font-mono"
+          >
+            DISCONNECT
+          </button>
         </div>
       </div>
     );
@@ -86,10 +96,10 @@ function ConnectMenu() {
     <div className="bg-black shadow-sm border-b border-terminal p-3 flex-shrink-0">
       <button 
         onClick={handleConnect}
-        disabled={isPending}
+        disabled={isLoading}
         className="w-full bg-terminal text-black px-4 py-3 rounded font-bold hover:bg-terminal/80 font-mono tracking-widest text-sm disabled:opacity-50"
       >
-        {isPending ? 'CONNECTING...' : 'CONNECT WALLET'}
+        {isLoading ? 'CONNECTING...' : 'CONNECT BASE ACCOUNT'}
       </button>
     </div>
   );
