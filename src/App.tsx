@@ -3,7 +3,7 @@ import { sdk } from "@farcaster/miniapp-sdk";
 import DailyCause from "./DailyCause";
 import ActivityFeed from "./ActivityFeed";
 import { BaseAccountProvider, useBaseAccount } from "./BaseAccountProvider";
-import { FarcasterAuthProvider, useFarcasterAuth } from "./FarcasterAuthProvider";
+import { WalletAuthProvider, useWalletAuth } from "./WalletAuthProvider";
 
 function App() {
   const [activeTab, setActiveTab] = useState<'cause' | 'activity'>('cause');
@@ -39,7 +39,7 @@ function App() {
   }, []);
 
   return (
-    <FarcasterAuthProvider>
+    <WalletAuthProvider>
       <BaseAccountProvider>
         <div className="min-h-full bg-terminal-bg flex flex-col">
           <div className="w-full max-w-sm mx-auto flex flex-col flex-1">
@@ -54,13 +54,13 @@ function App() {
           </div>
         </div>
       </BaseAccountProvider>
-    </FarcasterAuthProvider>
+    </WalletAuthProvider>
   );
 }
 
 function ConnectMenu() {
-  const { address, isConnected, connect, isLoading } = useBaseAccount();
-  const { isAuthenticated, fid, isLoading: authLoading } = useFarcasterAuth();
+  const { address: baseAddress, isConnected: baseConnected, connect, isLoading } = useBaseAccount();
+  const { isAuthenticated, address: walletAddress, isLoading: authLoading } = useWalletAuth();
 
   const handleConnect = async () => {
     try {
@@ -70,13 +70,13 @@ function ConnectMenu() {
     }
   };
 
-  // If user is authenticated with Farcaster, show their FID instead of wallet connection
-  if (isAuthenticated && fid) {
+  // If user is authenticated with wallet in Base App, show their address
+  if (isAuthenticated && walletAddress) {
     return (
       <div className="bg-black shadow-sm border-b border-terminal p-3 flex-shrink-0">
         <div className="flex justify-between items-center">
           <div className="text-xs text-terminal font-mono">
-            Farcaster: {fid}
+            Base App: {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
           </div>
           <div className="text-xs text-gray-400 font-mono">
             AUTO-CONNECTED
@@ -86,20 +86,20 @@ function ConnectMenu() {
     );
   }
 
-  // If user has connected their Base wallet, show the wallet info
-  if (isConnected && address) {
+  // If user has connected their Base wallet manually, show the wallet info
+  if (baseConnected && baseAddress) {
     return (
       <div className="bg-black shadow-sm border-b border-terminal p-3 flex-shrink-0">
         <div className="flex justify-between items-center">
           <div className="text-xs text-terminal font-mono">
-            Connected: {address.slice(0, 6)}...{address.slice(-4)}
+            Connected: {baseAddress.slice(0, 6)}...{baseAddress.slice(-4)}
           </div>
         </div>
       </div>
     );
   }
 
-  // Show connect button only if not authenticated with Farcaster and not loading
+  // Show connect button only if not authenticated with wallet and not loading
   if (!authLoading) {
     return (
       <div className="bg-black shadow-sm border-b border-terminal p-3 flex-shrink-0">
