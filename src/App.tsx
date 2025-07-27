@@ -1,9 +1,47 @@
 import React, { useEffect, useState } from "react";
 import { sdk } from "@farcaster/miniapp-sdk";
+import { useMiniKit } from '@coinbase/onchainkit/minikit';
 import DailyCause from "./DailyCause";
 import ActivityFeed from "./ActivityFeed";
 import { BaseAccountProvider, useBaseAccount } from "./BaseAccountProvider";
 import { WalletAuthProvider, useWalletAuth } from "./WalletAuthProvider";
+import { MiniKitContextProvider } from "./MiniKitProvider";
+
+function AppContent({ 
+  activeTab, 
+  setActiveTab 
+}: { 
+  activeTab: 'cause' | 'activity';
+  setActiveTab: (tab: 'cause' | 'activity') => void;
+}) {
+  const { setFrameReady, isFrameReady } = useMiniKit();
+
+  useEffect(() => {
+    // Set frame ready for MiniKit when app is loaded
+    if (!isFrameReady) {
+      setFrameReady();
+    }
+  }, [setFrameReady, isFrameReady]);
+
+  return (
+    <WalletAuthProvider>
+      <BaseAccountProvider>
+        <div className="min-h-full bg-terminal-bg flex flex-col">
+          <div className="w-full max-w-sm mx-auto flex flex-col flex-1">
+            <ConnectMenu />
+            
+            <div className="flex-1 overflow-y-auto flex flex-col justify-center items-center px-4 pb-6">
+              {activeTab === 'cause' && <DailyCause />}
+              {activeTab === 'activity' && <ActivityFeed />}
+              
+              <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
+            </div>
+          </div>
+        </div>
+      </BaseAccountProvider>
+    </WalletAuthProvider>
+  );
+}
 
 function App() {
   const [activeTab, setActiveTab] = useState<'cause' | 'activity'>('cause');
@@ -26,6 +64,7 @@ function App() {
         // Try to call sdk.actions.ready() - this will only work in Mini App environment
         await sdk.actions.ready();
         console.log('Mini App environment detected - continuing normally');
+        
         // Mini App environment detected - continue normally
       } catch (error) {
         console.log('Browser environment detected, redirecting to g1ve.xyz');
@@ -39,22 +78,9 @@ function App() {
   }, []);
 
   return (
-    <WalletAuthProvider>
-      <BaseAccountProvider>
-        <div className="min-h-full bg-terminal-bg flex flex-col">
-          <div className="w-full max-w-sm mx-auto flex flex-col flex-1">
-            <ConnectMenu />
-            
-            <div className="flex-1 overflow-y-auto flex flex-col justify-center items-center px-4 pb-6">
-              {activeTab === 'cause' && <DailyCause />}
-              {activeTab === 'activity' && <ActivityFeed />}
-              
-              <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
-            </div>
-          </div>
-        </div>
-      </BaseAccountProvider>
-    </WalletAuthProvider>
+    <MiniKitContextProvider>
+      <AppContent activeTab={activeTab} setActiveTab={setActiveTab} />
+    </MiniKitContextProvider>
   );
 }
 

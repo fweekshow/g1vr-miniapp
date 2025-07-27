@@ -5,7 +5,7 @@
   "framework": "vite",
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/.well-known/farcaster.json", "headers": { "Content-Type": "application/json" } },
+    { "src": "/.well-known/farcaster.json", "dest": "/api/manifest" },
     { "src": "/qr/(.*)", "dest": "/qr/$1" },
     { "src": "/logo.(png|svg)", "dest": "/logo.$1" },
     { "src": "/frame-image.svg", "dest": "/frame-image.svg" },
