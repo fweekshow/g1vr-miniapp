@@ -68,7 +68,7 @@ export class DonationTracker {
       const fromBlock = latestBlock - 100n; // Check last 100 blocks
       
       const logs = await client.getLogs({
-        address: DEPOSIT_ADDRESS,
+        address: DEPOSIT_ADDRESS as `0x${string}`,
         event: {
           type: 'event',
           name: 'Transfer',
