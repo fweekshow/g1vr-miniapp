@@ -1,25 +1,26 @@
 {
-  "miniapp": {
+  "frame": {
     "version": "1",
     "name": "G1VE",
+    "subtitle": "WAGMI, IRL",
+    "description": "G1VE is a daily onchain donation app built to make giving viral.",
+    "screenshotUrls": [],
     "iconUrl": "https://miniapp.g1ve.xyz/icon.png",
-    "homeUrl": "https://miniapp.g1ve.xyz/",
-    "imageUrl": "https://miniapp.g1ve.xyz/frame-image.png",
-    "buttonTitle": "Generosity Onchain",
     "splashImageUrl": "https://miniapp.g1ve.xyz/splash.png",
     "splashBackgroundColor": "#000000",
+    "homeUrl": "https://miniapp.g1ve.xyz/",
     "webhookUrl": "https://miniapp.g1ve.xyz/api/webhook",
-    "description": "G1VE is a daily onchain donation app built to make giving viral.",
-    "subtitle": "WAGMI, IRL",
     "primaryCategory": "social",
     "tags": [
       "social",
       "wagmi",
       "non-profit"
     ],
+    "heroImageUrl": "https://miniapp.g1ve.xyz/frame-image.png",
     "tagline": "Generosity, Onchain.",
     "ogTitle": "G1VE - Scan. Donate. WAGMI.",
-    "ogDescription": "Support public goods, build your streak, and grow your impact."
+    "ogDescription": "Support public goods, build your streak, and grow your impact.",
+    "ogImageUrl": "https://miniapp.g1ve.xyz/frame-image.png"
   },
   "accountAssociation": {
     "header": "eyJmaWQiOjQ5ODU0NCwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDBGNTJDQjQzOTJEMkZFYjJhMEMxMjkwYTNlN0UyMUJjMjI0NTNBNzIifQ",
