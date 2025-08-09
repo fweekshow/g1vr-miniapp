@@ -3,7 +3,6 @@ import { sdk } from "@farcaster/miniapp-sdk";
 import { useMiniKit } from '@coinbase/onchainkit/minikit';
 import DailyCause from "./DailyCause";
 import ActivityFeed from "./ActivityFeed";
-import RewardsDisplay from "./RewardsDisplay";
 import { BaseAccountProvider, useBaseAccount } from "./BaseAccountProvider";
 import { WalletAuthProvider, useWalletAuth } from "./WalletAuthProvider";
 import { MiniKitContextProvider } from "./MiniKitProvider";
@@ -12,8 +11,8 @@ function AppContent({
   activeTab, 
   setActiveTab 
 }: { 
-  activeTab: 'cause' | 'activity' | 'rewards';
-  setActiveTab: (tab: 'cause' | 'activity' | 'rewards') => void;
+  activeTab: 'cause' | 'activity';
+  setActiveTab: (tab: 'cause' | 'activity') => void;
 }) {
   const { setFrameReady, isFrameReady } = useMiniKit();
 
@@ -34,7 +33,7 @@ function AppContent({
             <div className="flex-1 overflow-y-auto flex flex-col justify-center items-center px-4 pb-6">
               {activeTab === 'cause' && <DailyCause />}
               {activeTab === 'activity' && <ActivityFeed />}
-              {activeTab === 'rewards' && <RewardsDisplay />}
+              {/* Rewards section hidden */}
               
               <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
             </div>
@@ -46,7 +45,7 @@ function AppContent({
 }
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'cause' | 'activity' | 'rewards'>('cause');
+  const [activeTab, setActiveTab] = useState<'cause' | 'activity'>('cause');
 
   useEffect(() => {
     // Check if we're in a Mini App environment
@@ -87,8 +86,8 @@ function App() {
 }
 
 function ConnectMenu() {
-  const { address: baseAddress, isConnected: baseConnected, connect, isLoading } = useBaseAccount();
-  const { isAuthenticated, address: walletAddress, isLoading: authLoading } = useWalletAuth();
+  const { address: baseAddress, isConnected: baseConnected, connect, disconnect: disconnectBase, isLoading } = useBaseAccount();
+  const { isAuthenticated, address: walletAddress, logout, isLoading: authLoading } = useWalletAuth();
 
   const handleConnect = async () => {
     try {
@@ -98,27 +97,51 @@ function ConnectMenu() {
     }
   };
 
-  // If user is authenticated with wallet in Base App, show simple connected status
+  const handleDisconnect = async () => {
+    try {
+      if (baseConnected) {
+        await disconnectBase();
+      } else if (isAuthenticated) {
+        logout();
+      }
+    } catch (error) {
+      console.error('Disconnect failed:', error);
+    }
+  };
+
+  // If user is authenticated with wallet in Base App, show disconnect button
   if (isAuthenticated && walletAddress) {
     return (
       <div className="bg-black shadow-sm border-b border-terminal p-3 flex-shrink-0">
-        <div className="flex justify-center items-center">
+        <div className="flex justify-between items-center">
           <div className="text-xs text-terminal font-mono">
             CONNECTED
           </div>
+          <button 
+            onClick={handleDisconnect}
+            className="text-xs text-red-400 hover:text-red-300 font-mono"
+          >
+            DISCONNECT
+          </button>
         </div>
       </div>
     );
   }
 
-  // If user has connected their Base wallet manually, show simple connected status
+  // If user has connected their Base wallet manually, show disconnect button
   if (baseConnected && baseAddress) {
     return (
       <div className="bg-black shadow-sm border-b border-terminal p-3 flex-shrink-0">
-        <div className="flex justify-center items-center">
+        <div className="flex justify-between items-center">
           <div className="text-xs text-terminal font-mono">
             CONNECTED
           </div>
+          <button 
+            onClick={handleDisconnect}
+            className="text-xs text-red-400 hover:text-red-300 font-mono"
+          >
+            DISCONNECT
+          </button>
         </div>
       </div>
     );
@@ -153,46 +176,35 @@ function TabNavigation({
   activeTab, 
   setActiveTab 
 }: { 
-  activeTab: 'cause' | 'activity' | 'rewards';
-  setActiveTab: (tab: 'cause' | 'activity' | 'rewards') => void;
+  activeTab: 'cause' | 'activity';
+  setActiveTab: (tab: 'cause' | 'activity') => void;
 }) {
-      return (
-      <div className="w-full max-w-sm mx-auto mt-6">
-        <div className="bg-black border border-terminal rounded-lg p-1 flex">
-          <button
-            onClick={() => setActiveTab('cause')}
-            className={`flex-1 py-3 px-4 text-xs font-bold font-mono rounded-md transition-colors ${
-              activeTab === 'cause' 
-                ? 'bg-terminal text-black' 
-                : 'text-gray-400 hover:text-white'
-            }`}
-          >
-            DAILY CAUSE
-          </button>
-          <button
-            onClick={() => setActiveTab('activity')}
-            className={`flex-1 py-3 px-4 text-xs font-bold font-mono rounded-md transition-colors ${
-              activeTab === 'activity' 
-                ? 'bg-terminal text-black' 
-                : 'text-gray-400 hover:text-white'
-            }`}
-          >
-            ACTIVITY
-          </button>
-          <button
-            onClick={() => setActiveTab('rewards')}
-            className={`flex-1 py-3 px-4 text-xs font-bold font-mono rounded-md transition-colors ${
-              activeTab === 'rewards' 
-                ? 'bg-terminal text-black' 
-                : 'text-gray-400 hover:text-white'
-            }`}
-          >
-            REWARDS
-          </button>
-
-        </div>
+  return (
+    <div className="w-full max-w-sm mx-auto mt-6">
+      <div className="bg-black border border-terminal rounded-lg p-1 flex">
+        <button
+          onClick={() => setActiveTab('cause')}
+          className={`flex-1 py-3 px-4 text-xs font-bold font-mono rounded-md transition-colors ${
+            activeTab === 'cause' 
+              ? 'bg-terminal text-black' 
+              : 'text-gray-400 hover:text-white'
+          }`}
+        >
+          DAILY CAUSE
+        </button>
+        <button
+          onClick={() => setActiveTab('activity')}
+          className={`flex-1 py-3 px-4 text-xs font-bold font-mono rounded-md transition-colors ${
+            activeTab === 'activity' 
+              ? 'bg-terminal text-black' 
+              : 'text-gray-400 hover:text-white'
+          }`}
+        >
+          ACTIVITY
+        </button>
       </div>
-    );
+    </div>
+  );
 }
 
 export default App;
