@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useOpenUrl, useNotification } from '@coinbase/onchainkit/minikit';
 import { causes } from './causes';
 
 interface Cause {
@@ -11,6 +12,8 @@ interface Cause {
 export default function DailyCause() {
   const [cause, setCause] = useState<Cause | null>(null);
   const [nextChange, setNextChange] = useState<string>('');
+  const openUrl = useOpenUrl();
+  const sendNotification = useNotification();
 
   useEffect(() => {
     // Get current date in Pacific Time at midnight
@@ -51,6 +54,25 @@ export default function DailyCause() {
     setNextChange(getNextChangeTime());
   }, []);
 
+  const handleDonate = async () => {
+    if (cause?.external_link) {
+      try {
+        // Open donation page within Mini App context
+        await openUrl(cause.external_link);
+        
+        // Send a notification to encourage donation completion
+        sendNotification({
+          title: `Support ${cause.name}`,
+          body: `Thank you for considering a donation to ${cause.name}. Complete your donation to earn rewards!`
+        });
+      } catch (error) {
+        console.error('Error opening donation page:', error);
+        // Fallback to opening in new tab if MiniKit fails
+        window.open(cause.external_link, '_blank');
+      }
+    }
+  };
+
   if (!cause) {
     return (
       <div className="text-center p-4">
@@ -86,21 +108,19 @@ export default function DailyCause() {
             />
           </div>
           
-          <a
-            href={cause.external_link}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={handleDonate}
             className="w-full bg-terminal text-black px-4 py-3 rounded font-bold shadow hover:bg-terminal/80 active:bg-terminal/90 transition text-center tracking-widest font-mono text-sm"
           >
             DONATE
-          </a>
+          </button>
         </div>
 
         <p className="text-xs text-gray-400 text-center font-mono">
-          Scan the QR code above with your phone's camera to donate directly to today's cause.
+          Click DONATE to open the donation page within the Mini App.
         </p>
         
-        <p className="text-xs text-gray-500 text-center font-mono mt-2">
+        <p className="text-xs text-gray-400 text-center font-mono mt-2">
           Next cause: {nextChange}
         </p>
       </div>
